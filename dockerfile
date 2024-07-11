@@ -1,19 +1,11 @@
-FROM node:14
+# Gunakan Nginx sebagai base image
+FROM nginx:alpine
 
-# Buat direktori kerja untuk aplikasi Anda
-WORKDIR /app
+# Copykan file index.html dari direktori lokal ke dalam direktori default Nginx
+COPY index.html /usr/share/nginx/html
 
-# Salin file package.json dan package-lock.json
-COPY package*.json ./
+# Nginx secara default akan mengekspose port 80
+EXPOSE 80
 
-# Install dependencies
-RUN npm install
-
-# Salin semua file ke dalam image
-COPY . .
-
-# Ekspose port aplikasi Anda
-EXPOSE 8080
-
-# Perintah untuk menjalankan aplikasi
-CMD ["node", "app.js"]
+# Command untuk menjalankan Nginx di background saat container berjalan
+CMD ["nginx", "-g", "daemon off;"]
